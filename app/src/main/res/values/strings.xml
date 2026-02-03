@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DentalCare</string>
+    
+    <!-- Authentication -->
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="sign_out">Sign Out</string>
+    
+    <!-- Navigation -->
+    <string name="dashboard">Dashboard</string>
+    <string name="patients">Patients</string>
+    <string name="appointments">Appointments</string>
+    <string name="treatments">Treatments</string>
+    <string name="diagnostics">Diagnostics</string>
+    <string name="reports">Reports</string>
+    <string name="settings">Settings</string>
+    
+    <!-- Dashboard -->
+    <string name="welcome_back">Welcome Back</string>
+    <string name="todays_appointments">Today\'s Appointments</string>
+    <string name="pending_treatments">Pending Treatments</string>
+    <string name="recent_diagnostics">Recent Diagnostics</string>
+    <string name="quick_actions">Quick Actions</string>
+    
+    <!-- Patients -->
+    <string name="add_patient">Add Patient</string>
+    <string name="patient_list">Patient List</string>
+    <string name="patient_details">Patient Details</string>
+    <string name="patient_name">Patient Name</string>
+    <string name="patient_id">Patient ID</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="address">Address</string>
+    <string name="medical_history">Medical History</string>
+    <string name="search_patients">Search Patients</string>
+    
+    <!-- Appointments -->
+    <string name="schedule_appointment">Schedule Appointment</string>
+    <string name="appointment_list">Appointment List</string>
+    <string name="appointment_details">Appointment Details</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="doctor">Doctor</string>
+    <string name="reason">Reason</string>
+    <string name="status">Status</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="completed">Completed</string>
+    <string name="cancelled">Cancelled</string>
+    
+    <!-- Treatments -->
+    <string name="add_treatment">Add Treatment</string>
+    <string name="treatment_list">Treatment List</string>
+    <string name="treatment_details">Treatment Details</string>
+    <string name="treatment_type">Treatment Type</string>
+    <string name="treatment_plan">Treatment Plan</string>
+    <string name="cost">Cost</string>
+    <string name="duration">Duration</string>
+    <string name="notes">Notes</string>
+    <string name="prescribed_medications">Prescribed Medications</string>
+    
+    <!-- Diagnostics -->
+    <string name="add_diagnostic">Add Diagnostic</string>
+    <string name="diagnostic_list">Diagnostic List</string>
+    <string name="diagnostic_details">Diagnostic Details</string>
+    <string name="xray">X-Ray</string>
+    <string name="scan">Scan</string>
+    <string name="examination">Examination</string>
+    <string name="findings">Findings</string>
+    <string name="upload_image">Upload Image</string>
+    
+    <!-- Reports -->
+    <string name="generate_report">Generate Report</string>
+    <string name="patient_report">Patient Report</string>
+    <string name="financial_report">Financial Report</string>
+    <string name="appointment_report">Appointment Report</string>
+    <string name="treatment_report">Treatment Report</string>
+    <string name="export">Export</string>
+    <string name="print">Print</string>
+    
+    <!-- Settings -->
+    <string name="profile">Profile</string>
+    <string name="preferences">Preferences</string>
+    <string name="notifications">Notifications</string>
+    <string name="privacy">Privacy</string>
+    <string name="about">About</string>
+    <string name="version">Version</string>
+    <string name="help">Help</string>
+    
+    <!-- Common -->
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="add">Add</string>
+    <string name="search">Search</string>
+    <string name="filter">Filter</string>
+    <string name="sort">Sort</string>
+    <string name="loading">Loading…</string>
+    <string name="error">Error</string>
+    <string name="success">Success</string>
+    <string name="confirm">Confirm</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">OK</string>
+    
+    <!-- Error Messages -->
+    <string name="error_empty_field">This field cannot be empty</string>
+    <string name="error_invalid_email">Invalid email address</string>
+    <string name="error_invalid_password">Password must be at least 6 characters</string>
+    <string name="error_password_mismatch">Passwords do not match</string>
+    <string name="error_network">Network error. Please check your connection</string>
+    <string name="error_generic">Something went wrong. Please try again</string>
+</resources>
