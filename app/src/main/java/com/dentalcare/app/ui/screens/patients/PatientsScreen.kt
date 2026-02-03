@@ -13,11 +13,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.dentalcare.app.R
 import com.dentalcare.app.data.model.Patient
+import com.dentalcare.app.ui.components.EmptyStateComponent
+import com.dentalcare.app.ui.components.ErrorComponent
 import com.dentalcare.app.ui.components.LoadingIndicator
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -25,6 +25,7 @@ import com.dentalcare.app.ui.components.LoadingIndicator
 fun PatientsScreen(
     onNavigateBack: () -> Unit,
     onNavigateToDetail: (String) -> Unit,
+    onNavigateToAdd: () -> Unit = {},
     viewModel: PatientsViewModel = hiltViewModel()
 ) {
     val patientsState by viewModel.patientsState.collectAsState()
@@ -32,7 +33,7 @@ fun PatientsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.patients)) },
+                title = { Text("Patients") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
@@ -41,8 +42,8 @@ fun PatientsScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /* TODO: Add patient */ }) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_patient))
+            FloatingActionButton(onClick = onNavigateToAdd) {
+                Icon(Icons.Default.Add, contentDescription = "Add patient")
             }
         }
     ) { paddingValues ->
@@ -56,32 +57,23 @@ fun PatientsScreen(
                     LoadingIndicator()
                 }
                 patientsState.error.isNotEmpty() -> {
-                    Text(
-                        text = patientsState.error,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(16.dp)
+                    ErrorComponent(
+                        message = patientsState.error,
+                        onRetry = { /* viewModel.retry() */ }
                     )
                 }
                 patientsState.patients.isEmpty() -> {
-                    Column(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Person,
-                            contentDescription = null,
-                            modifier = Modifier.size(64.dp),
-                            tint = MaterialTheme.colorScheme.outline
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            text = "No patients found",
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                    }
+                    EmptyStateComponent(
+                        icon = Icons.Default.Person,
+                        message = "No patients found",
+                        actionButton = {
+                            Button(onClick = onNavigateToAdd) {
+                                Icon(Icons.Default.Add, contentDescription = null)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("Add Patient")
+                            }
+                        }
+                    )
                 }
                 else -> {
                     LazyColumn(
@@ -125,11 +117,11 @@ fun PatientItem(
             )
             Column {
                 Text(
-                    text = patient.name,
+                    text = patient.getFullName(),
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    text = patient.phone,
+                    text = patient.phone.ifEmpty { "No phone" },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

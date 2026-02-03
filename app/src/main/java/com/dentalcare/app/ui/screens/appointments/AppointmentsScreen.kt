@@ -4,26 +4,26 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.dentalcare.app.R
 import com.dentalcare.app.data.model.Appointment
+import com.dentalcare.app.ui.components.EmptyStateComponent
+import com.dentalcare.app.ui.components.ErrorComponent
 import com.dentalcare.app.ui.components.LoadingIndicator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppointmentsScreen(
     onNavigateBack: () -> Unit,
+    onNavigateToAdd: () -> Unit = {},
+    onNavigateToDetail: (String) -> Unit = {},
     viewModel: AppointmentsViewModel = hiltViewModel()
 ) {
     val appointmentsState by viewModel.appointmentsState.collectAsState()
@@ -31,7 +31,7 @@ fun AppointmentsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.appointments)) },
+                title = { Text("Appointments") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
@@ -40,8 +40,8 @@ fun AppointmentsScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /* TODO: Add appointment */ }) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.schedule_appointment))
+            FloatingActionButton(onClick = onNavigateToAdd) {
+                Icon(Icons.Default.Add, contentDescription = "Add appointment")
             }
         }
     ) { paddingValues ->
@@ -55,32 +55,20 @@ fun AppointmentsScreen(
                     LoadingIndicator()
                 }
                 appointmentsState.error.isNotEmpty() -> {
-                    Text(
-                        text = appointmentsState.error,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(16.dp)
-                    )
+                    ErrorComponent(message = appointmentsState.error)
                 }
                 appointmentsState.appointments.isEmpty() -> {
-                    Column(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.DateRange,
-                            contentDescription = null,
-                            modifier = Modifier.size(64.dp),
-                            tint = MaterialTheme.colorScheme.outline
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            text = "No appointments found",
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                    }
+                    EmptyStateComponent(
+                        icon = Icons.Default.CalendarToday,
+                        message = "No appointments found",
+                        actionButton = {
+                            Button(onClick = onNavigateToAdd) {
+                                Icon(Icons.Default.Add, contentDescription = null)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("Schedule Appointment")
+                            }
+                        }
+                    )
                 }
                 else -> {
                     LazyColumn(
@@ -88,7 +76,10 @@ fun AppointmentsScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(appointmentsState.appointments) { appointment ->
-                            AppointmentItem(appointment)
+                            AppointmentCard(
+                                appointment = appointment,
+                                onClick = { onNavigateToDetail(appointment.id) }
+                            )
                         }
                     }
                 }
@@ -98,30 +89,60 @@ fun AppointmentsScreen(
 }
 
 @Composable
-fun AppointmentItem(appointment: Appointment) {
+fun AppointmentCard(
+    appointment: Appointment,
+    onClick: () -> Unit
+) {
     Card(
+        onClick = onClick,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = appointment.patientName,
-                style = MaterialTheme.typography.titleMedium
+            Icon(
+                imageVector = Icons.Default.CalendarToday,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(48.dp)
+                    .padding(end = 16.dp),
+                tint = MaterialTheme.colorScheme.primary
             )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = "${appointment.date} at ${appointment.time}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Text(
-                text = appointment.reason,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = appointment.patientName,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = "${appointment.date} at ${appointment.time}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = appointment.serviceType,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            Surface(
+                shape = MaterialTheme.shapes.small,
+                color = when (appointment.status) {
+                    com.dentalcare.app.data.model.AppointmentStatus.CONFIRMED -> 
+                        MaterialTheme.colorScheme.primaryContainer
+                    com.dentalcare.app.data.model.AppointmentStatus.COMPLETED -> 
+                        MaterialTheme.colorScheme.tertiaryContainer
+                    else -> MaterialTheme.colorScheme.secondaryContainer
+                }
+            ) {
+                Text(
+                    text = appointment.status.name,
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    style = MaterialTheme.typography.labelSmall
+                )
+            }
         }
     }
 }
