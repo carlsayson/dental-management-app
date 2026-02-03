@@ -2,6 +2,7 @@ package com.dentalcare.app.ui.screens.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dentalcare.app.data.model.User
 import com.dentalcare.app.data.repository.AuthRepository
 import com.dentalcare.app.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +26,9 @@ class LoginViewModel @Inject constructor(
     private val _loginState = MutableStateFlow(LoginState())
     val loginState: StateFlow<LoginState> = _loginState.asStateFlow()
     
+    private val _currentUser = MutableStateFlow<Resource<User?>>(Resource.Loading())
+    val currentUser: StateFlow<Resource<User?>> = _currentUser.asStateFlow()
+    
     fun login(email: String, password: String) {
         viewModelScope.launch {
             authRepository.signIn(email, password).collect { result ->
@@ -39,6 +43,14 @@ class LoginViewModel @Inject constructor(
                         _loginState.value = LoginState(error = result.message ?: "Login failed")
                     }
                 }
+            }
+        }
+    }
+    
+    fun checkCurrentUser() {
+        viewModelScope.launch {
+            authRepository.getCurrentUser().collect { result ->
+                _currentUser.value = result
             }
         }
     }
