@@ -194,7 +194,7 @@ fun AddEditTreatmentScreen(
                     readOnly = true,
                     trailingIcon = {
                         IconButton(onClick = { showDatePicker = true }) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = "Pick date")
+                            Icon(Icons.Default.CalendarToday, contentDescription = "Pick date")
                         }
                     }
                 )
@@ -229,7 +229,7 @@ fun AddEditTreatmentScreen(
                         readOnly = true,
                         trailingIcon = {
                             IconButton(onClick = { showFollowUpDatePicker = true }) {
-                                Icon(Icons.Default.ArrowBack, contentDescription = "Pick date")
+                                Icon(Icons.Default.CalendarToday, contentDescription = "Pick date")
                             }
                         },
                         placeholder = { Text("Select follow-up date") }

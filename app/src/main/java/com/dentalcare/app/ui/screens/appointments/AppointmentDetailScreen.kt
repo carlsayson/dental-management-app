@@ -29,6 +29,7 @@ fun AppointmentDetailScreen(
     var showCancelDialog by remember { mutableStateOf(false) }
     var showCompleteDialog by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(true) }
+    val scope = rememberCoroutineScope()
     
     LaunchedEffect(appointmentId) {
         appointmentRepository.getAppointment(appointmentId).collect { result ->
@@ -54,7 +55,7 @@ fun AppointmentDetailScreen(
             onConfirm = {
                 appointment?.let {
                     val updated = it.copy(status = AppointmentStatus.CONFIRMED)
-                    kotlinx.coroutines.GlobalScope.launch {
+                    scope.launch {
                         appointmentRepository.updateAppointment(updated).collect {}
                     }
                 }
@@ -72,7 +73,7 @@ fun AppointmentDetailScreen(
             onConfirm = {
                 appointment?.let {
                     val updated = it.copy(status = AppointmentStatus.COMPLETED)
-                    kotlinx.coroutines.GlobalScope.launch {
+                    scope.launch {
                         appointmentRepository.updateAppointment(updated).collect {}
                     }
                 }
@@ -90,7 +91,7 @@ fun AppointmentDetailScreen(
             onConfirm = {
                 appointment?.let {
                     val updated = it.copy(status = AppointmentStatus.CANCELLED)
-                    kotlinx.coroutines.GlobalScope.launch {
+                    scope.launch {
                         appointmentRepository.updateAppointment(updated).collect {}
                     }
                 }

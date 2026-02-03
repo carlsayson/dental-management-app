@@ -169,7 +169,7 @@ fun AddEditAppointmentScreen(
                     readOnly = true,
                     trailingIcon = {
                         IconButton(onClick = { showDatePicker = true }) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = "Pick date")
+                            Icon(Icons.Default.CalendarToday, contentDescription = "Pick date")
                         }
                     }
                 )
@@ -182,7 +182,7 @@ fun AddEditAppointmentScreen(
                     readOnly = true,
                     trailingIcon = {
                         IconButton(onClick = { showTimePicker = true }) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = "Pick time")
+                            Icon(Icons.Default.Schedule, contentDescription = "Pick time")
                         }
                     },
                     isError = timeError != null,
